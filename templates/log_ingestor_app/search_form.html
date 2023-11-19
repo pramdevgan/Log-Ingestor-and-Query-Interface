@@ -36,15 +36,11 @@
 
     <div class="row">
         <ul class="list-group">
-            {% if start_date and end_date and log_entries %}
                 {% for info in log_entries %}
                     <li class="list-group-item">
                         {{ info.level }} | {{ info.message }} | {{ info.resourceId }} | {{ info.timestamp }} | {{ info.traceId }} | {{ info.spanId }} | {{ info.commit }} | {{ info.metadata }}
                     </li>
                 {% endfor %}
-            {% elif start_date and end_date %}
-                <p class="text-danger mt-4">{{ log_entries }}</p>
-            {% endif %}
         </ul>
     </div>
 </main>
