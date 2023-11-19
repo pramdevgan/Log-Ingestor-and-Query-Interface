@@ -204,7 +204,6 @@ def filter_logs(request):
             return HttpResponseBadRequest("Error: Invalid date format")
 
     qs = qs.select_related('metadata').filter(**filters)
-    print(qs.query)
 
     context = {
         'form_fields': form_fields,
