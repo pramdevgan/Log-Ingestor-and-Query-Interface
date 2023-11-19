@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main role="main" class="container mt-4">
+    <h3>Query Interface</h3>
+    {% csrf_token %}
+
+    <div>
+        <form method="get" action=".">
+            <div class="form-row">
+                {% for field_name, placeholder in form_fields.items %}
+                    <div class="form-group {% if field_name == 'start_date' or field_name == 'end_date' %}col-12{% elif field_name == 'start_date_icon' or field_name == 'end_date_icon' %}col-1{% else %}col-xs-12 col-sm-6 col-md-4 col-lg-4{% endif %}">
+                        <div class="input-group">
+                            {% if field_name == 'start_date' or field_name == 'end_date' %}
+                                <input class="form-control py-2 border-right-0 border" type="text" name="{{ field_name }}" placeholder="{{ placeholder }}" readonly>
+                            {% elif field_name == 'start_date_icon' or field_name == 'end_date_icon' %}
+                                <span class="input-group-text bg-transparent">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                            {% else %}
+                                <input class="form-control py-2 border-right-0 border" type="search" name="{{ field_name }}" placeholder="{{ placeholder }}">
+                                <span class="input-group-append">
+                                    <div class="input-group-text bg-transparent">
+                                        <i class="fa fa-search"></i>
+                                    </div>
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+
+    <div class="row">
+        <ul class="list-group">
+            {% if start_date and end_date and log_entries %}
+                {% for info in log_entries %}
+                    <li class="list-group-item">
+                        {{ info.level }} | {{ info.message }} | {{ info.resourceId }} | {{ info.timestamp }} | {{ info.traceId }} | {{ info.spanId }} | {{ info.commit }} | {{ info.metadata }}
+                    </li>
+                {% endfor %}
+            {% elif start_date and end_date %}
+                <p class="text-danger mt-4">{{ log_entries }}</p>
+            {% endif %}
+        </ul>
+    </div>
+</main>
+
+{% endblock %}
